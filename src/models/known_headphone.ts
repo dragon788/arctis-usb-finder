@@ -12,6 +12,8 @@ interface KnownHeadphoneProps {
   micStatusIdx?: number;
   gameVolumeIdx?: number;
   chatVolumeIdx?: number;
+  modelNumber?: string;  // Hardware model number (e.g., HS25TX, HS25TXX)
+  notes?: string;        // Additional notes about the device
 }
 
 export const KnownHeadphoneFactory = ({
@@ -27,7 +29,9 @@ export const KnownHeadphoneFactory = ({
   chargingStatusIdx,
   micStatusIdx,
   gameVolumeIdx,
-  chatVolumeIdx
+  chatVolumeIdx,
+  modelNumber,
+  notes
 }: KnownHeadphoneProps): KnownHeadphone =>
   new KnownHeadphone(
     name,
@@ -42,7 +46,11 @@ export const KnownHeadphoneFactory = ({
     chargingStatusIdx,
     micStatusIdx,
     gameVolumeIdx,
-    chatVolumeIdx
+    chatVolumeIdx,
+    undefined, // path
+    undefined, // vendorId (use default)
+    modelNumber,
+    notes
   );
 
 export default class KnownHeadphone {
@@ -51,6 +59,8 @@ export default class KnownHeadphone {
   static ArctisPro_Wireless_ProductID = 0x1290;
 
   static Arctis_Nova_Pro_Wireless_ProductID = 0x12e0;
+  static Arctis_Nova_Pro_Wireless_Xbox_ProductID = 0x12e5;
+  static Arctis_Nova_Pro_Wireless_Bootloader_ProductID = 0x12e1;
   static Arctis_Nova_Elite_ProductID = 0x2244;
 
   static Arctis7_2017_ProductID = 0x1260;
@@ -91,6 +101,8 @@ export default class KnownHeadphone {
     readonly gameVolumeIdx?: number,
     readonly chatVolumeIdx?: number,
     public path?: string,
-    readonly vendorId = KnownHeadphone.ArctisVendorID
+    readonly vendorId = KnownHeadphone.ArctisVendorID,
+    readonly modelNumber?: string,
+    readonly notes?: string
   ) {}
 }

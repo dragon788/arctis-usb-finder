@@ -47,6 +47,7 @@ export default class Builder {
         this.specificBuilder = new Arctis9MapBatteryBuilder();
         break;
       case KnownHeadphone.Arctis_Nova_Pro_Wireless_ProductID:
+      case KnownHeadphone.Arctis_Nova_Pro_Wireless_Xbox_ProductID:
         this.specificBuilder = new ArctisNovaProWirelessBuilder();
         break;
       case KnownHeadphone.Arctis_Nova_Elite_ProductID:
@@ -62,6 +63,8 @@ export default class Builder {
 
     let simpleHeadphone = {
       modelName: headphone.name,
+      modelNumber: headphone.modelNumber,
+      notes: headphone.notes,
       vendorId: headphone.vendorId,
       productId: headphone.productId,
       path: headphone.path,

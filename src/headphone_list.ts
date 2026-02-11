@@ -46,6 +46,8 @@ const list: KnownHeadphone[] = [
     interfaceNum: 0,
     batteryPercentIdx: 0
   }),
+  // Nova Pro Wireless: battery values 0-8 (mapped to 0-100% in 9 steps)
+  // Base station labeled "Base Station (Nova Pro)" - compatible with Nova Pro Wireless headsets
   KnownHeadphoneFactory({
     name: 'Arctis Nova Pro Wireless',
     productId: KnownHeadphone.Arctis_Nova_Pro_Wireless_ProductID,
@@ -53,11 +55,44 @@ const list: KnownHeadphone[] = [
     usagePage: 0xffc0,
     usage: 0x1,
     interfaceNum: 4,
-    batteryPercentIdx: 6,
-    batteryPercentIdx2: 7,
-    batteryPresentIdx2: 5, // 1 = battery present, 0 = no battery
-    chargingStatusIdx: 15
+    batteryPercentIdx: 6,       // headset battery (raw 0-8)
+    batteryPercentIdx2: 7,      // hot-swap slot battery (raw 0-8)
+    batteryPresentIdx2: 5,      // 1 = battery present, 0 = no battery
+    chargingStatusIdx: 15,      // 1=disconnected, 2=charging, 4=wired+wireless, 8=discharging
+    modelNumber: 'HS25TX',
+    notes: 'Base station labeled "Base Station (Nova Pro)". Has USB 1 + USB 2 ports. Compatible with Nova Pro Wireless headsets.'
   }),
+  // Nova Pro Wireless Xbox: same HID protocol, different port labels (XBOX + USB instead of USB 1 + USB 2)
+  // Base station labeled "Arctis Nova Pro Wireless" - designed specifically for Xbox
+  KnownHeadphoneFactory({
+    name: 'Arctis Nova Pro Wireless Xbox',
+    productId: KnownHeadphone.Arctis_Nova_Pro_Wireless_Xbox_ProductID,
+    writeBytes: [0x06, 0xb0],
+    usagePage: 0xffc0,
+    usage: 0x1,
+    interfaceNum: 4,
+    batteryPercentIdx: 6,       // headset battery (raw 0-8)
+    batteryPercentIdx2: 7,      // hot-swap slot battery (raw 0-8)
+    batteryPresentIdx2: 5,      // 1 = battery present, 0 = no battery
+    chargingStatusIdx: 15,      // 1=disconnected, 2=charging, 4=wired+wireless, 8=discharging
+    modelNumber: 'HS25TXX',
+    notes: 'Base station labeled "Arctis Nova Pro Wireless". Has XBOX + USB ports. Xbox port does not present as HID device to Mac/PC - must use USB port for battery monitoring.'
+  }),
+  // Nova Pro Wireless in bootloader mode - needs firmware update via SteelSeries GG
+  // Device won't respond to battery commands in this state
+  KnownHeadphoneFactory({
+    name: 'Arctis Nova Pro Wireless (Bootloader Mode)',
+    productId: KnownHeadphone.Arctis_Nova_Pro_Wireless_Bootloader_ProductID,
+    writeBytes: [0x06, 0xb0],
+    usagePage: 0,
+    usage: 0,
+    interfaceNum: 0,
+    batteryPercentIdx: 0,
+    notes: 'Device is in bootloader/firmware update mode. Launch SteelSeries GG to complete firmware update.'
+  }),
+  // Nova Elite: battery values are direct percentages (0-100%)
+  // NOTE: idx5 does NOT indicate battery presence for Elite (always 1)
+  // Battery presence is detected by idx7 > 0
   KnownHeadphoneFactory({
     name: 'Arctis Nova Elite',
     productId: KnownHeadphone.Arctis_Nova_Elite_ProductID,
@@ -65,10 +100,10 @@ const list: KnownHeadphone[] = [
     usagePage: 0xffc0,
     usage: 0x1,
     interfaceNum: 3,
-    batteryPercentIdx: 6,
-    batteryPercentIdx2: 7,
-    batteryPresentIdx2: 5,
-    chargingStatusIdx: 15
+    batteryPercentIdx: 6,       // headset battery (direct 0-100%)
+    batteryPercentIdx2: 7,      // base spare battery (direct 0-100%, 0 = empty or dead)
+    // batteryPresentIdx2 not used for Elite - idx5 doesn't indicate battery presence
+    chargingStatusIdx: 15       // 1=disconnected, 2=charging, 8=discharging
   }),
 
   KnownHeadphoneFactory({
